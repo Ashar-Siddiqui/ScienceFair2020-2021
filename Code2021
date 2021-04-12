@@ -1,0 +1,49 @@
+import RPi.GPIO as GPIO
+import time
+
+BEAM_PIN = 17
+BEAM_PIN2 = 24
+LEDPin = 18
+
+entry = 0
+out = 0
+thresh = 10
+ppl = 0
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(BEAM_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(BEAM_PIN2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(LEDPin, GPIO.OUT)
+
+while(True):
+	
+    if GPIO.input(BEAM_PIN) == True:
+        pass 
+    else:
+        entry += 1
+        time.sleep(0.5)
+        print("entry broken")
+        ppl = entry - out
+        print(ppl)
+        if ppl >= thresh:
+            GPIO.output(LEDPin, True)
+            print("Already", thresh, "people inside; can't enter now.")
+        elif ppl < thresh:
+            GPIO.output(LEDPin, False)
+
+    if GPIO.input(BEAM_PIN2) == True:
+        pass 
+    else:
+        out += 1
+        time.sleep(0.5)
+        print("exit broken")
+
+        ppl = entry - out
+        print(ppl)
+        if ppl >= thresh:
+            print("Already", thresh, "people inside; can't enter now.")
+            GPIO.output(LEDPin, True)
+        elif ppl < thresh:
+            GPIO.output(LEDPin, False)
+GPIO.cleanup()
+
