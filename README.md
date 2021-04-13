@@ -1,2 +1,2 @@
 # ScienceFair2020-2021
-BreakBeamSensorProject
+BreakBeamSensor Project
